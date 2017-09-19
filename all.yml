@@ -2,5 +2,5 @@
 
 - hosts: all
   roles:
+    - { role: nginx, become: yes }
     - { role: fail2ban, become: yes }
-
