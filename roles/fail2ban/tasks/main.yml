@@ -1,0 +1,20 @@
+---
+
+- name: Install fail2ban
+  apt: name=fail2ban update_cache=yes
+
+- name: copy filters
+  copy: dest=/etc/fail2ban/filter.d/{{ item }} src={{ item }} backup=yes
+  with_items:
+    - nginx-login.conf
+    - nginx-noscript.conf
+    - nginx-proxy.conf
+
+- name: copy fail2ban config file
+  copy: dest=/etc/fail2ban/jail.conf src=fail2ban.conf force=yes
+
+- name: start fail2ban
+  shell: fail2ban-server
+
+- name: fail2ban jail status
+  shell: fail2ban-client status

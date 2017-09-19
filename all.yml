@@ -1,0 +1,6 @@
+---
+
+- hosts: all
+  roles:
+    - { role: fail2ban, become: yes }
+
