@@ -1,0 +1,30 @@
+---
+
+- name: check ruby install version
+  stat: path={{ RUBY_INSTALL_BINDIR }}
+  register: rubyinstall
+
+- name: check downloaded ruby-install
+  stat: path=~/ruby-install-{{ ruby_install_version }}.tar.gz
+  register: rubyinstalldownload
+
+- name: download ruby-install
+  shell: chdir=~ wget -O ruby-install-{{ ruby_install_version }}.tar.gz https://github.com/postmodern/ruby-install/archive/v0.6.0.tar.gz
+  when: not rubyinstalldownload.stat.exists
+
+- name: extract ruby-install
+  shell: chdir=~ tar -xzf ruby-install-{{ ruby_install_version }}.tar.gz
+
+- name: install ruby-install
+  shell: chdir=~/ruby-install-{{ ruby_install_version }}/ make install
+  environment:
+    DESTDIR: "{{ RUBY_INSTALL_DESTDIR }}"
+  when: not rubyinstall.stat.exists
+
+- name: update bashenv path
+  lineinfile: dest=~/.bash_profile line="export PATH=$PATH:{{ RUBY_INSTALL_DESTDIR }}/usr/local/bin"
+
+- name: update rubies
+  shell: executable=/bin/bash ruby-install -L
+  environment:
+    BASH_ENV: ~/.bash_profile

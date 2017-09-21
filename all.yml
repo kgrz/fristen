@@ -2,5 +2,9 @@
 
 - hosts: all
   roles:
+    - { role: common, become: yes }
     - { role: nginx, become: yes }
     - { role: fail2ban, become: yes }
+    - { role: ruby-install }
+    - { role: chruby }
+    - { role: ruby }

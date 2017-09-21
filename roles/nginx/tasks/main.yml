@@ -3,12 +3,6 @@
 - name: Install nginx
   apt: name=nginx update_cache=yes
 
-- name: create web group
-  group: name=web
-
-- name: create web user
-  user: name=web group=web comment="User for nginx management"
-
 - name: delete existing sites-available directory
   file: path=/etc/nginx/sites-available state=absent
 

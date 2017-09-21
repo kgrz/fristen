@@ -1,0 +1,29 @@
+---
+
+- name: check ruby version file
+  stat: path=~/.ruby-version
+  register: rubyversionfile
+
+- name: copy ruby version file
+  template: dest=~/.ruby-version src=templates/ruby-version mode=640
+  when: not rubyversionfile.stat.exists
+
+- name: create /opt/rubies directory
+  become_user: root
+  become: true
+  file: path=/opt/rubies group=web owner={{ ansible_user }} state=directory
+
+- name: compile and install ruby
+  shell: executable=/bin/bash ruby-install -c --no-reinstall --no-install-deps --rubies-dir /opt/rubies ruby {{ rubyversion }} -- --disable-install-doc --disable-install-rdoc --disable-install-capi --without-valgrind --with-out-ext=dbm,gdbm
+  environment:
+    BASH_ENV: ~/.bash_profile
+
+- name: install bundler and jekyll
+  shell: executable=/bin/bash chruby-exec {{ rubyversion }} -- gem install {{ item }} --no-ri --no-rdoc
+  with_items:
+    - bundler
+    - jekyll
+  environment:
+    BASH_ENV: ~/.bash_profile
+  tags:
+    - bundler

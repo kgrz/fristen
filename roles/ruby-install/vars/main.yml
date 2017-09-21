@@ -1,0 +1,5 @@
+---
+
+ruby_install_version: 0.6.0
+RUBY_INSTALL_DESTDIR: ~/ruby-install
+RUBY_INSTALL_BINDIR: ~/ruby-install/usr/local/bin/ruby-install

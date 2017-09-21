@@ -1,0 +1,35 @@
+---
+
+- name: create web group
+  group: name=web
+
+- name: create web user
+  user: name=web group=web comment="User for nginx management"
+
+- name: add current user to web group
+  user: name={{ ansible_user }} groups=web append=yes
+
+- name: create bash_profile
+  become_user: "{{ ansible_user }}"
+  become: true
+  file: path=~/.bash_profile state=touch mode=0644
+
+- name: add git core ppa
+  apt_repository: repo="deb http://ftp.us.debian.org/debian testing main contrib non-free"
+
+- name: download node
+  shell: wget -qO- https://deb.nodesource.com/setup_6.x | bash -
+
+- name: prerequisites for ruby, node, nginx
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - bison
+    - build-essential
+    - libffi-dev
+    - libncurses5-dev
+    - libreadline-dev
+    - libssl-dev
+    - libyaml-dev
+    - zlib1g-dev
+    - git
+    - nodejs

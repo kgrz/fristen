@@ -1,0 +1,38 @@
+---
+
+- name: check chruby version
+  stat: path={{ CHRUBY_BINDIR }}
+  register: chruby
+
+- name: check downloaded chruby
+  stat: path=~/chruby-{{ chruby_version }}.tar.gz
+  register: chrubydownload
+
+- name: download chruby
+  shell: chdir=~ wget -O chruby-{{ chruby_version }}.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
+  when: not chrubydownload.stat.exists
+
+- name: extract chruby
+  shell: chdir=~ tar -xzf chruby-{{ chruby_version }}.tar.gz
+
+- name: create install directory
+  file: path={{ CHRUBY_DESTDIR }} state=directory mode=0755
+  when: not chruby.stat.exists
+
+- name: install chruby
+  shell: chdir=~/chruby-{{ chruby_version }}/ make install
+  environment:
+    DESTDIR: "{{ CHRUBY_DESTDIR }}"
+  when: not chruby.stat.exists
+
+- name: update bashenv
+  lineinfile: dest=~/.bash_profile line={{ item }}
+  with_items:
+    - source {{ CHRUBY_DESTDIR }}/usr/local/share/chruby/chruby.sh
+    - source {{ CHRUBY_DESTDIR }}/usr/local/share/chruby/auto.sh
+    - export PATH=$PATH:{{ CHRUBY_DESTDIR }}/usr/local/bin
+
+- name: check chruby
+  shell: executable=/bin/bash chruby-exec --help
+  environment:
+    BASH_ENV: ~/.bash_profile
