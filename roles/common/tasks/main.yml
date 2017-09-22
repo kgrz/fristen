@@ -17,8 +17,18 @@
 - name: add git core ppa
   apt_repository: repo="deb http://ftp.us.debian.org/debian testing main contrib non-free"
 
-- name: download node
+- name: check if node upstream is already added
+  # TODO: Move this to a variable
+  stat: path=/etc/apt/sources.list.d/nodesource.list
+  register: nodesourcerepo
+
+- name: Download node remote repository
   shell: wget -qO- https://deb.nodesource.com/setup_6.x | bash -
+  when: not nodesourcerepo.stat.exists
+
+# https://github.com/ansible/ansible/issues/18987 IDK
+- name: install aptitude
+  apt: name=aptitude state=present update_cache=yes
 
 - name: prerequisites for ruby, node, nginx
   apt: name={{ item }} update_cache=yes

@@ -1,0 +1,17 @@
+---
+
+- name: create repo
+  file: state=directory path={{ repo_dir }} mode=0755
+- name: initialize bare git repo
+  shell: chdir={{ repo_dir }} git init --bare
+- name: remove existing hooks folder
+  file: path={{ repo_dir }}/hooks state=absent
+- name: create git hooks folder
+  file: path={{ repo_dir }}/hooks state=directory mode=0744 force=true
+- name: copy git hook file
+  template: src=post-receive dest={{ repo_dir }}/hooks/post-receive mode="u=rx,g=r,o=r"
+  tags: copy
+- name: remove temporary directory if any
+  file: path={{ temp_dir }} state=absent
+- name: Output the git remote path
+  debug: msg="Remote for your local git repo is ssh://{{ ansible_user }}@{{ ansible_hostname }}/{{ repo_dir }}"

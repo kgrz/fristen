@@ -8,3 +8,4 @@
     - { role: ruby-install }
     - { role: chruby }
     - { role: ruby }
+    - { role: git-hook }

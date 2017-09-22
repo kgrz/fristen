@@ -1,0 +1,17 @@
+---
+
+#!/bin/bash
+
+rm -Rf {{ temp_dir }}
+source ~/.bash_profile
+
+git clone {{ repo_dir }} {{ temp_dir }}
+cd {{ temp_dir }}
+
+chruby-exec {{ rubyversion }} -- bundle install
+chruby-exec {{ rubyversion }} -- bundle exec jekyll --version
+chruby-exec {{ rubyversion }} -- bundle exec jekyll build --destination {{ website_root}} --config {{ temp_dir }}/_config.yml {{ temp_dir }}/_config.prod.yml
+
+exit
+rm -Rf {{ temp_dir }}
+exit(0)
