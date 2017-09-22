@@ -30,6 +30,9 @@ versions installed are the ones that come with running `apt-get install`):
    build the application
 
 
+[fail2ban-customrules]: https://github.com/kgrz/fristen/tree/master/roles/fail2ban/files
+[rubyversion-file]: https://github.com/kgrz/fristen/blob/master/group_vars/all.yml
+
 I haven't made this terribly configurable, but you can try out modifying
 the variables and stuff to customise it to suit your personal needs.
 
