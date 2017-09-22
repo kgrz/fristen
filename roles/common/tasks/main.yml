@@ -15,6 +15,7 @@
   file: path=~/.bash_profile state=touch mode=0644
 
 - name: add git core ppa
+  # TODO: Should this be removed? We should be using https probably
   apt_repository: repo="deb http://ftp.us.debian.org/debian testing main contrib non-free"
 
 - name: check if node upstream is already added

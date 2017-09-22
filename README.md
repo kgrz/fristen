@@ -6,13 +6,20 @@ Fristen
 
 
 This is an ansible playbook that sets up a Git-driven deployment style
-Jekyll instance on a fresh linux machine. I use similar workflow to
-deploy the rare blog post gems of knowledge I tend to write.
+Jekyll instance on a fresh linux machine, based on the workflow I use to
+deploy the rare blog post gems of knowledge I tend to write. The
+explanation is in the [Jekyll official blog post][jekyll-post]
 
-These are the things that the playbook sets up:
+
+[jekyll-post]: https://jekyllrb.com/docs/deployment-methods/#git-post-receive-hook
+
+These are the things that the playbook sets up (unless specified, the
+versions installed are the ones that come with running `apt-get install`):
 
 1. Nginx as the server
 1. fail2ban with some [custom rules][fail2ban-customrules]
+1. Git (obtained from git-core ppa)
+1. Nodejs 6 (execjs backend if required)
 1. Ruby-Install
 1. Chruby
 1. Ruby (hard-coded to 2.4.1), customisable via a
