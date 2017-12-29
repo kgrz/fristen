@@ -44,3 +44,4 @@
     - zlib1g-dev
     - git
     - nodejs
+    - ruby # need this for futher compilation by ruby-install

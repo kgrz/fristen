@@ -99,10 +99,18 @@ roles
 ```
 
 
+#### Usage
+
+Run:
+
+    ansible-playbook -l <hosts> all.yml
+
 
 
 #### Might do in the future
 
+1. Add let's encrypt setup
+1. Add logrotate configurations, and tests for those
 1. Add a way to output all the exact git remotes properly to stdout.
 1. More conservative installations. Currently, Ruby is installed even if
    present. That should be done only if ruby is not present. Same goes
