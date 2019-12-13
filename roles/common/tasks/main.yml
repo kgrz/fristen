@@ -43,5 +43,6 @@
     - libyaml-dev
     - zlib1g-dev
     - git
+    - npm
     - nodejs
     - ruby
